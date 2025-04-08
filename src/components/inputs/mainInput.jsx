@@ -1,3 +1,7 @@
+import { useState } from "react";
+import Eye from "../../../assets/icons/eye.svg";
+import EyeClosed from "../../../assets/icons/closedEye.svg";
+
 const MainInput = ({
   value,
   onChange,
@@ -9,6 +13,14 @@ const MainInput = ({
   label,
   id,
 }) => {
+  const [showPassword, setShowPassword] = useState(false);
+
+  const isPassword = type === "password";
+
+  const togglePassword = () => {
+    setShowPassword((prev) => !prev);
+  };
+
   return (
     <div className={`flex flex-col ${classDiv}`}>
       {label && (
@@ -19,14 +31,31 @@ const MainInput = ({
           {label}
         </label>
       )}
-      <input
-        id={id}
-        value={value}
-        onChange={onChange}
-        type={type}
-        placeholder={placeholder}
-        className={`border-2 border-black rounded-lg ps-2 ${classInput}`}
-      />
+      <div className={`w-full relative flex  justify-center`}>
+        <input
+          id={id}
+          value={value}
+          onChange={onChange}
+          type={isPassword ? (showPassword ? "text" : "password") : type}
+          placeholder={placeholder}
+          className={`border-2 border-black rounded-lg ps-2 ${
+            isPassword ? "pe-7" : ""
+          }  ${classInput}`}
+        />
+        {isPassword && (
+          <button
+            type="button"
+            onClick={togglePassword}
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-sm text-gray-600 !w-1/12 !h-1/2"
+          >
+            {showPassword ? (
+              <img src={Eye} alt="mostrar senha" />
+            ) : (
+              <img src={EyeClosed} alt="ocultar senha" />
+            )}
+          </button>
+        )}
+      </div>
     </div>
   );
 };
