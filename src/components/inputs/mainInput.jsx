@@ -10,8 +10,10 @@ const MainInput = ({
   classDiv,
   classInput,
   classLabel,
+  classIcon,
   label,
   id,
+  onKeyDown,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -41,12 +43,13 @@ const MainInput = ({
           className={`border-2 border-black rounded-lg ps-2 ${
             isPassword ? "pe-7" : ""
           }  ${classInput}`}
+          onKeyDown={onKeyDown}
         />
         {isPassword && (
           <button
             type="button"
             onClick={togglePassword}
-            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-sm text-gray-600 !w-1/12 !h-1/2"
+            className={`absolute right-2 top-1/2 transform -translate-y-1/2 text-sm text-gray-600 !w-1/12 !h-1/2 ${classIcon}`}
           >
             {showPassword ? (
               <img src={Eye} alt="mostrar senha" />

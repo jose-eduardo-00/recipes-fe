@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import MainInput from "../../../../components/inputs/mainInput";
-import MainButton from "../../../../components/buttons/mainButton";
-import api from "../../../../services/api/user/index";
-import MainAlert from "../../../../components/alerts/mainAlert";
+import MainInput from "../../../components/inputs/mainInput";
+import MainButton from "../../../components/buttons/mainButton";
+import api from "../../../services/api/user/index";
+import MainAlert from "../../../components/alerts/mainAlert";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
@@ -127,7 +127,7 @@ const Register = () => {
   };
 
   const handleRegister = () => {
-    navigate("/Login");
+    navigate("/");
   };
 
   const handlePass = (event) => {
