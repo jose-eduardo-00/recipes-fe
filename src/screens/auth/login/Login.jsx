@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import MainInput from "../../../components/inputs/mainInput";
 import MainButton from "../../../components/buttons/mainButton";
 import { useNavigate } from "react-router-dom";
@@ -17,6 +17,8 @@ const Login = () => {
   const [msgType, setMsgType] = useState(false);
 
   const navigate = useNavigate();
+
+  const hasFetched = useRef(false);
 
   const handleHome = () => {
     navigate("/home");
@@ -109,6 +111,26 @@ const Login = () => {
     // qunado tiver a tela de recuperar senha
     // navigate("/");
   };
+
+  const handleCheckToken = () => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      api.checkToken(token).then((res) => {
+        console.log(res.status, res.data);
+        if (res.status === 200) {
+          handleHome();
+        }
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (!hasFetched.current) {
+      hasFetched.current = true;
+      handleCheckToken();
+    }
+  }, []);
 
   return (
     <div
