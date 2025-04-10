@@ -4,6 +4,8 @@ import Register from "../screens/auth/register/Register";
 import Login from "../screens/auth/login/Login";
 import NewRecipes from "../screens/newRecipes/NewRecipes";
 import Layout from "../components/layout/Layout";
+import Category from "../screens/category/Category";
+import UsersList from "../screens/usersList/UsersList";
 
 const AppRoutes = () => {
   return (
@@ -23,6 +25,22 @@ const AppRoutes = () => {
         element={
           <Layout>
             <NewRecipes />
+          </Layout>
+        }
+      />
+      <Route
+        path="/category"
+        element={
+          <Layout>
+            <Category />
+          </Layout>
+        }
+      />
+      <Route
+        path="/users-list"
+        element={
+          <Layout>
+            <UsersList />
           </Layout>
         }
       />

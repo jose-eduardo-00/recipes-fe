@@ -23,6 +23,7 @@ const Navbar = ({ toggleSidebar }) => {
 
   const hasFetched = useRef(false);
   const dropdownRef = useRef(null);
+  const buttonRef = useRef(null);
 
   const handleLogin = () => {
     navigate("/");
@@ -52,10 +53,16 @@ const Navbar = ({ toggleSidebar }) => {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(event.target)
+      ) {
         setIsDropdownOpen(false);
       }
     };
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
@@ -95,24 +102,28 @@ const Navbar = ({ toggleSidebar }) => {
         <FontAwesomeIcon icon={faBars} />
       </button>
 
-      <div className="me-6">
+      <div className="me-6 flex flex-row items-center gap-4">
+        <h2 className="font-medium">
+          {user != null ? `${user.firstName} ${user.lastName}` : ""}
+        </h2>
         <button
+          ref={buttonRef}
           className=" cursor-pointer flex flex-row items-center gap-2"
           onClick={() => setIsDropdownOpen((prev) => !prev)}
         >
-          <FontAwesomeIcon icon={faAngleDown} />
           <div className="w-10 h-10 rounded-4xl bg-gray-300 flex items-center justify-center">
             <FontAwesomeIcon icon={faUser} />
           </div>
+          <FontAwesomeIcon icon={faAngleDown} />
         </button>
 
         <div
           ref={dropdownRef}
-          className={`absolute right-5 mt-2 w-64 bg-white rounded-md p-4 z-50 transition-all duration-300 ease-in-out transform shadow-[0_4px_12px_rgba(0,0,0,0.2)]
+          className={`absolute right-5 top-15 mt-2 w-64 bg-white rounded-md p-4 z-50 transition-all duration-300 ease-in-out transform shadow-[0_4px_12px_rgba(0,0,0,0.2)]
             ${
               isDropdownOpen
                 ? "opacity-100 scale-100 translate-y-0"
-                : "opacity-0 scale-95 -translate-y-2 pointer-events-none"
+                : "opacity-0 scale-95 -translate-y-6 pointer-events-none"
             }
           `}
         >

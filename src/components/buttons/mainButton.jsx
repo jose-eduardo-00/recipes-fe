@@ -5,13 +5,14 @@ const MainButton = ({
   classDiv,
   classButton,
   classSpinner,
+  disabled,
 }) => {
   return (
     <div className={`flex justify-center ${classDiv}`}>
       <button
         onClick={onClick}
         className={`px-4 py-2 font-semibold rounded-lg flex items-center justify-center gap-2 transition-all ${classButton} cursor-pointer`}
-        disabled={isLoading}
+        disabled={disabled}
       >
         {isLoading ? (
           <div

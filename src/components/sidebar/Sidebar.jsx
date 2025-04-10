@@ -64,7 +64,7 @@ const Sidebar = ({ isOpen }) => {
                 }`}
               >
                 <Link
-                  to="/home"
+                  to="/users-list"
                   className="group inline-flex items-center gap-2 relative w-fit"
                 >
                   <FontAwesomeIcon icon={faUsers} className="w-5 h-5" />
@@ -78,7 +78,7 @@ const Sidebar = ({ isOpen }) => {
                 }`}
               >
                 <Link
-                  to="/home"
+                  to="/category"
                   className="group inline-flex items-center gap-2 relative w-fit"
                 >
                   <FontAwesomeIcon icon={faLayerGroup} className="w-5 h-5" />
