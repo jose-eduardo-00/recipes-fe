@@ -29,4 +29,61 @@ export default {
       return error.response || error.message || error;
     }
   },
+
+  allUsers: async () => {
+    try {
+      const response = await http.get("/users/", {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "Access-Control-Allow-Headers": "*",
+          "Access-Control-Allow-Methods": "OPTIONS,GET",
+        },
+      });
+
+      return response;
+    } catch (error) {
+      return error.response || error.message || error;
+    }
+  },
+
+  editActivatedUser: async (id, activated) => {
+    try {
+      const response = await http.put(
+        `/users/edit-activated/${id}`,
+        {
+          activated: activated,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "Access-Control-Allow-Headers": "*",
+            "Access-Control-Allow-Methods": "OPTIONS,PUT",
+          },
+        }
+      );
+
+      return response;
+    } catch (error) {
+      return error.response || error.message || error;
+    }
+  },
+
+  deleteUser: async (id) => {
+    try {
+      const response = await http.delete(`/users/delete/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "Access-Control-Allow-Headers": "*",
+          "Access-Control-Allow-Methods": "OPTIONS,DELETE",
+        },
+      });
+
+      return response;
+    } catch (error) {
+      return error.response || error.message || error;
+    }
+  },
 };
