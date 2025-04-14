@@ -18,6 +18,7 @@ const MainInput = ({
   const [showPassword, setShowPassword] = useState(false);
 
   const isPassword = type === "password";
+  const isTextarea = type === "textarea";
 
   const togglePassword = () => {
     setShowPassword((prev) => !prev);
@@ -34,17 +35,28 @@ const MainInput = ({
         </label>
       )}
       <div className={`w-full relative flex  justify-center`}>
-        <input
-          id={id}
-          value={value}
-          onChange={onChange}
-          type={isPassword ? (showPassword ? "text" : "password") : type}
-          placeholder={placeholder}
-          className={`border-2 border-black rounded-lg ps-2 ${
-            isPassword ? "pe-7" : ""
-          }  ${classInput}`}
-          onKeyDown={onKeyDown}
-        />
+        {isTextarea ? (
+          <textarea
+            id={id}
+            value={value}
+            onChange={onChange}
+            placeholder={placeholder}
+            className={`border-2 border-black rounded-lg ps-2 pt-2 resize-none ${classInput}`}
+            onKeyDown={onKeyDown}
+          />
+        ) : (
+          <input
+            id={id}
+            value={value}
+            onChange={onChange}
+            type={isPassword ? (showPassword ? "text" : "password") : type}
+            placeholder={placeholder}
+            className={`border-2 border-black rounded-lg ps-2 !align-top ${
+              isPassword ? "pe-7" : ""
+            }  ${classInput}`}
+            onKeyDown={onKeyDown}
+          />
+        )}
         {isPassword && (
           <button
             type="button"
