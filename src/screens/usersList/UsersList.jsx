@@ -6,20 +6,30 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBan,
   faCheck,
-  faEye,
   faPenToSquare,
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
 import MainAlert from "../../components/alerts/mainAlert";
+import Modal from "../../components/modals/modalEditUser";
+import MainInput from "../../components/inputs/mainInput";
 
 const UsersList = () => {
   const [usersList, setUsersList] = useState(null);
   const [user, setUser] = useState(null);
 
+  const [isLoadingEdit, setIsLoadingEdit] = useState(null);
+
   const [msgAlert, setMsgAlert] = useState(false);
   const [msgText, setMsgText] = useState("");
   const [msgTitle, setMsgTitle] = useState("");
   const [msgType, setMsgType] = useState("");
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+
+  const [name, setName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
 
   const hasFetched = useRef(false);
 
@@ -34,13 +44,8 @@ const UsersList = () => {
       type: "buttons",
       buttons: [
         {
-          icon: <FontAwesomeIcon icon={faEye} className="text-white" />,
-          onClick: (item) => handleResume(item.id),
-          colorButton: "bg-sky-500",
-        },
-        {
           icon: <FontAwesomeIcon icon={faPenToSquare} className="text-white" />,
-          onClick: (item) => handleEdit(item.id),
+          onClick: (item) => handleEdit(item),
           colorButton: "bg-yellow-500",
         },
         {
@@ -92,7 +97,6 @@ const UsersList = () => {
   }, []);
 
   const handleDelete = (item) => {
-    console.log(item);
     api.deleteUser(item).then((res) => {
       if (res.status === 200) {
         getAllUsers(user.id);
@@ -108,12 +112,52 @@ const UsersList = () => {
       }
     });
   };
+
   const handleEdit = (item) => {
     console.log(item);
+    setSelectedUser(item);
+    setName(item.firstName);
+    setLastName(item.lastName);
+    setEmail(item.email);
+
+    setIsModalOpen(true);
   };
-  const handleResume = (item) => {
-    console.log(item);
+
+  const handleSaveEdit = () => {
+    setIsLoadingEdit(true);
+    console.log(selectedUser);
+
+    api.editUser(selectedUser.id, name, lastName, email).then((res) => {
+      if (res.status === 200) {
+        getAllUsers(user.id);
+        setIsLoadingEdit(false);
+        setIsModalOpen(false);
+
+        setSelectedUser(null);
+        setName("");
+        setLastName("");
+        setEmail("");
+      } else {
+        setIsLoadingEdit(false);
+        setIsModalOpen(false);
+
+        setSelectedUser(null);
+        setName("");
+        setLastName("");
+        setEmail("");
+
+        setMsgType("error");
+        setMsgTitle("Erro");
+        setMsgText("Erro de conexão, tente novamente mais tarde.");
+        setMsgAlert(true);
+
+        setTimeout(() => {
+          setMsgAlert(false);
+        }, 3000);
+      }
+    });
   };
+
   const handleEditActive = (item, e) => {
     console.log(item, e);
     api.editActivatedUser(item, e).then((res) => {
@@ -146,6 +190,53 @@ const UsersList = () => {
 
         <MainTable columns={columns} data={usersList} itemsPerPage={8} />
       </div>
+
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title="Editar Usuário"
+        classCard={"!max-w-xl"}
+        isLoading={isLoadingEdit}
+        handleSaveEdit={handleSaveEdit}
+      >
+        <div className="flex flex-row gap-4">
+          <MainInput
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            type={"text"}
+            placeholder={"Nome"}
+            classInput={"w-full h-10 !border-gray-400"}
+            classDiv={"w-full mt-6 flex items-center"}
+            classLabel={"w-full ps-2"}
+            label={"Nome"}
+            id={"nome"}
+          />
+
+          <MainInput
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            type={"text"}
+            placeholder={"Sobrenome"}
+            classInput={"w-full h-10 !border-gray-400"}
+            classDiv={"w-full mt-6 flex items-center"}
+            classLabel={"w-full ps-2"}
+            label={"Sobrenome"}
+            id={"sobrenome"}
+          />
+        </div>
+
+        <MainInput
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          type={"text"}
+          placeholder={"Email"}
+          classInput={"w-full h-10 !border-gray-400"}
+          classDiv={"w-full mt-4 flex items-center"}
+          classLabel={"w-full ps-2"}
+          label={"Email"}
+          id={"email"}
+        />
+      </Modal>
     </div>
   );
 };

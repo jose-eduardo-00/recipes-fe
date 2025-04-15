@@ -86,4 +86,31 @@ export default {
       return error.response || error.message || error;
     }
   },
+
+  editUser: async (id, firstName, lastName, email, password, pushToken) => {
+    try {
+      const response = await http.put(
+        `/users/edit/${id}`,
+        {
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          password: password,
+          pushToken: pushToken,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "Access-Control-Allow-Headers": "*",
+            "Access-Control-Allow-Methods": "OPTIONS,PUT",
+          },
+        }
+      );
+
+      return response;
+    } catch (error) {
+      return error.response || error.message || error;
+    }
+  },
 };
