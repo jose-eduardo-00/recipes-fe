@@ -46,7 +46,7 @@ const Sidebar = ({ isOpen }) => {
       <aside
         className={`${
           isOpen ? "w-64 p-4" : "w-0 py-4"
-        } h-screen bg-gray-800 text-white transition-all duration-500 overflow-hidden`}
+        } min-h-screen bg-gray-800 text-white transition-all duration-500 overflow-hidden`}
       >
         {user?.role === "admin" && (
           <div className="border-b-1 mb-8">
