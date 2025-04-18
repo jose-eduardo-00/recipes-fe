@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faFolderClosed,
   faHouse,
   faLayerGroup,
   faNewspaper,
@@ -124,6 +125,22 @@ const Sidebar = ({ isOpen }) => {
               <FontAwesomeIcon icon={faNewspaper} className="w-5 h-5" />
               <span className="font-bold whitespace-nowrap">
                 Criar Receitas
+              </span>
+              <span className="absolute left-[-4px] -bottom-1 h-[3px] w-[calc(100%+12px)] bg-white scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100 rounded" />
+            </Link>
+          </li>
+          <li
+            className={`transition-opacity duration-500 ${
+              isOpen ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            <Link
+              to="/my-recipes"
+              className="group inline-flex items-center gap-2 relative w-fit"
+            >
+              <FontAwesomeIcon icon={faFolderClosed} className="w-5 h-5" />
+              <span className="font-bold whitespace-nowrap">
+                Minhas Receitas
               </span>
               <span className="absolute left-[-4px] -bottom-1 h-[3px] w-[calc(100%+12px)] bg-white scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100 rounded" />
             </Link>

@@ -6,6 +6,8 @@ import NewRecipes from "../screens/newRecipes/NewRecipes";
 import Layout from "../components/layout/Layout";
 import Category from "../screens/category/Category";
 import UsersList from "../screens/usersList/UsersList";
+import MyRecipes from "../screens/myRecipes/MyRecipes";
+import Perfil from "../screens/perfil/Perfil";
 
 const AppRoutes = () => {
   return (
@@ -41,6 +43,22 @@ const AppRoutes = () => {
         element={
           <Layout>
             <UsersList />
+          </Layout>
+        }
+      />
+      <Route
+        path="/my-recipes"
+        element={
+          <Layout>
+            <MyRecipes />
+          </Layout>
+        }
+      />
+      <Route
+        path="/perfil"
+        element={
+          <Layout>
+            <Perfil />
           </Layout>
         }
       />
