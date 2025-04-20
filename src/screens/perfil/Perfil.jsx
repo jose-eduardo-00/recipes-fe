@@ -4,6 +4,9 @@ import person from "../../../assets/icons/person.svg";
 import MainButton from "../../components/buttons/mainButton";
 import MainInput from "../../components/inputs/mainInput";
 import { baseUrl } from "../../services/config";
+import api from "../../services/api/user/index";
+import MainAlert from "../../components/alerts/mainAlert";
+import { useGlobalContext } from "../../context/context";
 
 const Perfil = () => {
   const [user, setUser] = useState(null);
@@ -14,12 +17,19 @@ const Perfil = () => {
   const [email, setEmail] = useState("");
 
   const [image, setImage] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
 
-  const hasFetched = useRef(false);
+  const [msgAlert, setMsgAlert] = useState(false);
+  const [msgText, setMsgText] = useState("");
+  const [msgTitle, setMsgTitle] = useState("");
+  const [msgType, setMsgType] = useState("");
+
+  const { updateToken } = useGlobalContext();
+
+  const { token } = useGlobalContext();
   const inputRef = useRef();
 
   const handleCheckToken = () => {
-    const token = localStorage.getItem("token");
     if (token) {
       const decoded = jwtDecode(token);
       setUser(decoded);
@@ -35,14 +45,42 @@ const Perfil = () => {
   };
 
   useEffect(() => {
-    if (!hasFetched.current) {
-      hasFetched.current = true;
+    if (token) {
       handleCheckToken();
     }
-  }, []);
+  }, [token]);
 
   const handleEditar = () => {
     setIsLoading(true);
+
+    api
+      .editUser(user.id, name, lastName, email, "", "", selectedFile)
+      .then((res) => {
+        if (res.status === 200) {
+          updateToken(res.data.token);
+
+          setMsgType("success");
+          setMsgTitle("Sucesso");
+          setMsgText("Dados atualizados com sucesso.");
+          setMsgAlert(true);
+
+          setTimeout(() => {
+            setIsLoading(false);
+            setMsgAlert(false);
+          }, 3000);
+        } else {
+          setIsLoading(false);
+
+          setMsgType("error");
+          setMsgTitle("Erro");
+          setMsgText("Erro de conexão, tente novamente mais tarde.");
+          setMsgAlert(true);
+
+          setTimeout(() => {
+            setMsgAlert(false);
+          }, 3000);
+        }
+      });
 
     setTimeout(() => {
       setIsLoading(false);
@@ -57,6 +95,7 @@ const Perfil = () => {
     const file = e.target.files[0];
     if (file) {
       setIsLoadingImg(true);
+      setSelectedFile(file);
       const imageUrl = URL.createObjectURL(file);
       setImage(imageUrl);
       setIsLoadingImg(false);
@@ -70,6 +109,10 @@ const Perfil = () => {
           <h2 className="text-gray-500 text-xl font-bold pb-2 border-b-3 mb-4 border-gray-200">
             Perfil
           </h2>
+
+          {msgAlert && (
+            <MainAlert type={msgType} message={msgText} title={msgTitle} />
+          )}
 
           <div className="p-5 flex flex-row gap-6">
             <div className="flex flex-col gap-2">

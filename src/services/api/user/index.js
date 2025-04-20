@@ -87,26 +87,33 @@ export default {
     }
   },
 
-  editUser: async (id, firstName, lastName, email, password, pushToken) => {
+  editUser: async (
+    id,
+    firstName,
+    lastName,
+    email,
+    password,
+    pushToken,
+    avatar
+  ) => {
     try {
-      const response = await http.put(
-        `/users/edit/${id}`,
-        {
-          firstName: firstName,
-          lastName: lastName,
-          email: email,
-          password: password,
-          pushToken: pushToken,
+      const formData = new FormData();
+
+      formData.append("firstName", firstName);
+      formData.append("lastName", lastName);
+      formData.append("email", email);
+      formData.append("password", password);
+      formData.append("pushToken", pushToken);
+      formData.append("avatar", avatar);
+
+      const response = await http.put(`/users/edit/${id}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Accept: "application/json",
+          "Access-Control-Allow-Headers": "*",
+          "Access-Control-Allow-Methods": "OPTIONS,PUT",
         },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            "Access-Control-Allow-Headers": "*",
-            "Access-Control-Allow-Methods": "OPTIONS,PUT",
-          },
-        }
-      );
+      });
 
       return response;
     } catch (error) {

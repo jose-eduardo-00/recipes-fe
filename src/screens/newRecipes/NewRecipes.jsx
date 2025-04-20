@@ -8,6 +8,7 @@ import api from "../../services/api/recipe/index";
 import { jwtDecode } from "jwt-decode";
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useGlobalContext } from "../../context/context";
 
 const NewRecipes = () => {
   const [user, setUser] = useState(null);
@@ -40,10 +41,9 @@ const NewRecipes = () => {
 
   const inputRef = useRef(null);
 
-  const hasFetched = useRef(false);
+  const { token } = useGlobalContext();
 
   const handleCheckToken = () => {
-    const token = localStorage.getItem("token");
     if (token) {
       const decoded = jwtDecode(token);
       setUser(decoded);
@@ -71,12 +71,11 @@ const NewRecipes = () => {
   };
 
   useEffect(() => {
-    if (!hasFetched.current) {
-      hasFetched.current = true;
+    if (token) {
       handleCheckToken();
       getAllCategorys();
     }
-  }, []);
+  }, [token]);
 
   const handleSalvarReceita = () => {
     setIsLoadingSave(true);

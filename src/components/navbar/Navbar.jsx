@@ -2,15 +2,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, faBars, faUser } from "@fortawesome/free-solid-svg-icons";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import api from "../../services/api/auth/index";
 import MainButton from "../buttons/mainButton";
 import MainAlert from "../alerts/mainAlert";
+import { useGlobalContext } from "../../context/context";
+import { baseUrl } from "../../services/config";
 
 const Navbar = ({ toggleSidebar }) => {
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -21,16 +22,18 @@ const Navbar = ({ toggleSidebar }) => {
 
   const navigate = useNavigate();
 
-  const hasFetched = useRef(false);
   const dropdownRef = useRef(null);
   const buttonRef = useRef(null);
+
+  const { token } = useGlobalContext();
+
+  const location = useLocation();
 
   const handleLogin = () => {
     navigate("/");
   };
 
   const handleCheckToken = () => {
-    const token = localStorage.getItem("token");
     if (token) {
       api.checkToken(token).then((res) => {
         if (res.status !== 200) {
@@ -38,18 +41,16 @@ const Navbar = ({ toggleSidebar }) => {
         } else {
           const decoded = jwtDecode(token);
           setUser(decoded);
-          setToken(token);
         }
       });
     }
   };
 
   useEffect(() => {
-    if (!hasFetched.current) {
-      hasFetched.current = true;
+    if (token) {
       handleCheckToken();
     }
-  }, []);
+  }, [token]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -93,6 +94,10 @@ const Navbar = ({ toggleSidebar }) => {
     });
   };
 
+  useEffect(() => {
+    setIsDropdownOpen(false);
+  }, [location.pathname]);
+
   return (
     <nav className="w-full h-20 bg-white px-4 flex items-center justify-between shadow-[0_1px_4px_rgba(0,0,0,0.1)] z-10">
       <button
@@ -111,8 +116,16 @@ const Navbar = ({ toggleSidebar }) => {
           className=" cursor-pointer flex flex-row items-center gap-2"
           onClick={() => setIsDropdownOpen((prev) => !prev)}
         >
-          <div className="w-10 h-10 rounded-4xl bg-gray-300 flex items-center justify-center">
-            <FontAwesomeIcon icon={faUser} />
+          <div className="w-12 h-12 rounded-4xl bg-gray-300 flex items-center justify-center">
+            {user != null && user.avatar != null ? (
+              <img
+                src={`${baseUrl}${user.avatar}`}
+                alt="Foto do Usuário"
+                className="w-full h-full rounded-4xl"
+              />
+            ) : (
+              <FontAwesomeIcon icon={faUser} />
+            )}
           </div>
           <FontAwesomeIcon icon={faAngleDown} />
         </button>

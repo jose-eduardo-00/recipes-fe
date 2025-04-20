@@ -6,6 +6,7 @@ import MainAlert from "../../components/alerts/mainAlert";
 import { jwtDecode } from "jwt-decode";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { useGlobalContext } from "../../context/context";
 
 const Category = () => {
   const [name, setName] = useState("");
@@ -20,12 +21,11 @@ const Category = () => {
   const [msgType, setMsgType] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const hasFetched = useRef(false);
+  const { token } = useGlobalContext();
 
   const itemsPerPage = 8;
 
   const handleCheckToken = () => {
-    const token = localStorage.getItem("token");
     if (token) {
       const decoded = jwtDecode(token);
       setUser(decoded);
@@ -33,12 +33,11 @@ const Category = () => {
   };
 
   useEffect(() => {
-    if (!hasFetched.current) {
-      hasFetched.current = true;
+    if (token) {
       handleCheckToken();
       getAllCategorys();
     }
-  }, []);
+  }, [token]);
 
   const getAllCategorys = () => {
     api.allCategorys().then((res) => {

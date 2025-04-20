@@ -11,18 +11,19 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import api from "../../services/api/auth/index";
 import { jwtDecode } from "jwt-decode";
+import { useGlobalContext } from "../../context/context";
 
 const Sidebar = ({ isOpen }) => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
-  const hasFetched = useRef(false);
+
+  const { token } = useGlobalContext();
 
   const handleLogin = () => {
     navigate("/");
   };
 
   const handleCheckToken = () => {
-    const token = localStorage.getItem("token");
     if (token) {
       api.checkToken(token).then((res) => {
         if (res.status !== 200) {
@@ -36,11 +37,10 @@ const Sidebar = ({ isOpen }) => {
   };
 
   useEffect(() => {
-    if (!hasFetched.current) {
-      hasFetched.current = true;
+    if (token) {
       handleCheckToken();
     }
-  }, []);
+  }, [token]);
 
   return (
     <div className="flex">

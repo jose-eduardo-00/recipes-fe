@@ -4,6 +4,7 @@ import MainButton from "../../../components/buttons/mainButton";
 import { useNavigate } from "react-router-dom";
 import MainAlert from "../../../components/alerts/mainAlert";
 import api from "../../../services/api/auth/index";
+import { useGlobalContext } from "../../../context/context";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -18,7 +19,7 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  const hasFetched = useRef(false);
+  const { updateToken, token } = useGlobalContext();
 
   const handleHome = () => {
     navigate("/home");
@@ -42,7 +43,7 @@ const Login = () => {
       api.login(email, pass).then((res) => {
         console.log(res.status, res.data);
         if (res.status === 200) {
-          localStorage.setItem("token", res.data.token);
+          updateToken(res.data.token);
 
           setMsgType("success");
           setMsgTitle("Sucesso");
@@ -113,8 +114,6 @@ const Login = () => {
   };
 
   const handleCheckToken = () => {
-    const token = localStorage.getItem("token");
-
     if (token) {
       api.checkToken(token).then((res) => {
         console.log(res.status, res.data);
@@ -126,11 +125,10 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (!hasFetched.current) {
-      hasFetched.current = true;
+    if (token) {
       handleCheckToken();
     }
-  }, []);
+  }, [token]);
 
   return (
     <div

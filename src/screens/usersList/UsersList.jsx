@@ -12,6 +12,7 @@ import {
 import MainAlert from "../../components/alerts/mainAlert";
 import Modal from "../../components/modals/modalEditUser";
 import MainInput from "../../components/inputs/mainInput";
+import { useGlobalContext } from "../../context/context";
 
 const UsersList = () => {
   const [usersList, setUsersList] = useState(null);
@@ -31,7 +32,7 @@ const UsersList = () => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
 
-  const hasFetched = useRef(false);
+  const { token } = useGlobalContext();
 
   const columns = [
     { label: "Nome", field: "firstName" },
@@ -70,7 +71,6 @@ const UsersList = () => {
   ];
 
   const handleCheckToken = () => {
-    const token = localStorage.getItem("token");
     if (token) {
       const decoded = jwtDecode(token);
       setUser(decoded);
@@ -90,11 +90,10 @@ const UsersList = () => {
   };
 
   useEffect(() => {
-    if (!hasFetched.current) {
-      hasFetched.current = true;
+    if (token) {
       handleCheckToken();
     }
-  }, []);
+  }, [token]);
 
   const handleDelete = (item) => {
     api.deleteUser(item).then((res) => {
