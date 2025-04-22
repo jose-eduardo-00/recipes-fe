@@ -224,7 +224,9 @@ const NewRecipes = () => {
   };
 
   const addIngrediente = () => {
-    setIngredientes([...ingredientes, { name: "", quantity: "" }]);
+    if (ingredientes.length < 15) {
+      setIngredientes([...ingredientes, { name: "", quantity: "" }]);
+    }
   };
 
   const removeIngrediente = (indexToRemove) => {
@@ -253,10 +255,12 @@ const NewRecipes = () => {
   };
 
   const addMethod = () => {
-    setPreparationMethod([
-      ...preparationMethod,
-      { description: "", order: preparationMethod.length + 1 },
-    ]);
+    if (preparationMethod.length < 10) {
+      setPreparationMethod([
+        ...preparationMethod,
+        { description: "", order: preparationMethod.length + 1 },
+      ]);
+    }
   };
 
   const removeMethod = (indexToRemove) => {
@@ -291,7 +295,7 @@ const NewRecipes = () => {
 
   return (
     <div className="bg-gray-50 h-full px-6 py-10 ">
-      <div className="bg-white rounded-xl shadow-[0_2px_4px_rgba(0,0,0,0.1)] w-full p-4">
+      <div className="bg-white rounded-xl shadow-[0_2px_4px_rgba(0,0,0,0.1)] w-full px-4 py-6">
         <h2 className="text-gray-500 text-xl font-bold pb-2 border-b-3 mb-4 border-gray-200">
           Criar Receita | Passo {step}
         </h2>
@@ -429,7 +433,7 @@ const NewRecipes = () => {
                   classInput={"w-full h-10 !border-gray-400"}
                   classDiv={"w-7/12 flex items-center"}
                   classLabel={"w-full ps-2"}
-                  label={`Nome`}
+                  label={`Ingrediente ${index + 1}`}
                   id={`nome-i-${index}`}
                 />
 
@@ -448,7 +452,8 @@ const NewRecipes = () => {
                 />
 
                 <div className="w-2/12 flex flex-row gap-2">
-                  {index + 1 === ingredientes.length ? (
+                  {index + 1 === ingredientes.length &&
+                  ingredientes.length < 15 ? (
                     <div className="flex items-end w-1/3">
                       <button
                         type="button"
@@ -501,7 +506,8 @@ const NewRecipes = () => {
                 />
 
                 <div className="w-2/12 flex flex-row gap-2">
-                  {index + 1 === preparationMethod.length ? (
+                  {index + 1 === preparationMethod.length &&
+                  preparationMethod.length < 10 ? (
                     <div className="flex items-end mb-3 w-1/3">
                       <button
                         type="button"

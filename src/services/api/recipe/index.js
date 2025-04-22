@@ -40,4 +40,21 @@ export default {
       return error.response || error.message || error;
     }
   },
+
+  myRecipes: async (id) => {
+    try {
+      const response = await http.get(`/recipes/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "Access-Control-Allow-Headers": "*",
+          "Access-Control-Allow-Methods": "OPTIONS,GET",
+        },
+      });
+
+      return response;
+    } catch (error) {
+      return error.response || error.message || error;
+    }
+  },
 };

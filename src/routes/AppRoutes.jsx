@@ -8,6 +8,7 @@ import Category from "../screens/category/Category";
 import UsersList from "../screens/usersList/UsersList";
 import MyRecipes from "../screens/myRecipes/MyRecipes";
 import Perfil from "../screens/perfil/Perfil";
+import Recipe from "../screens/recipe/Recipe";
 
 const AppRoutes = () => {
   return (
@@ -59,6 +60,14 @@ const AppRoutes = () => {
         element={
           <Layout>
             <Perfil />
+          </Layout>
+        }
+      />
+      <Route
+        path="/recipe"
+        element={
+          <Layout>
+            <Recipe />
           </Layout>
         }
       />
