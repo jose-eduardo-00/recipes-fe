@@ -57,4 +57,46 @@ export default {
       return error.response || error.message || error;
     }
   },
+
+  recipe: async (id) => {
+    console.log("id aqui --->", id);
+    try {
+      const response = await http.get(`/recipes/recipe/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "Access-Control-Allow-Headers": "*",
+          "Access-Control-Allow-Methods": "OPTIONS,GET",
+        },
+      });
+
+      return response;
+    } catch (error) {
+      return error.response || error.message || error;
+    }
+  },
+
+  recommendedRecipes: async (id, userId, recipeId) => {
+    try {
+      const response = await http.post(
+        `/recipes/recommended-recipes/${id}`,
+        {
+          userId: userId,
+          recipeId: recipeId,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "Access-Control-Allow-Headers": "*",
+            "Access-Control-Allow-Methods": "OPTIONS,GET",
+          },
+        }
+      );
+
+      return response;
+    } catch (error) {
+      return error.response || error.message || error;
+    }
+  },
 };

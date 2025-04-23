@@ -117,7 +117,7 @@ const Navbar = ({ toggleSidebar }) => {
           onClick={() => setIsDropdownOpen((prev) => !prev)}
         >
           <div className="w-12 h-12 rounded-4xl bg-gray-300 flex items-center justify-center">
-            {user != null && user.avatar != null ? (
+            {user != null && user.avatar ? (
               <img
                 src={`${baseUrl}${user.avatar}`}
                 alt="Foto do Usuário"

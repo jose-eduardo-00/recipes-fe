@@ -22,7 +22,6 @@ const MyRecipes = () => {
 
   const getMyRecipes = (id) => {
     api.myRecipes(id).then((res) => {
-      console.log(res.status, res.data.recipes);
       if (res.status === 200) {
         setRecipes(res.data.recipes);
 
@@ -50,9 +49,7 @@ const MyRecipes = () => {
   };
 
   const handleRecipe = (item) => {
-    console.log(item);
-
-    navigate("../recipe", { state: { recipe: item } });
+    navigate("../recipe", { state: { id: item.id, recipeItem: item } });
   };
 
   const handleFilterRecipes = (item) => {
@@ -89,7 +86,7 @@ const MyRecipes = () => {
               id="nameRecipe"
             />
           </div>
-          {filteredRecipes == null ? (
+          {filteredRecipes == null || filteredRecipes.length == 0 ? (
             <div className="flex flex-col items-center w-full">
               <p className="font-medium mb-3">
                 Você não possui nenhum receita salva.
