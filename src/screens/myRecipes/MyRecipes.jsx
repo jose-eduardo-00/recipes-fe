@@ -118,11 +118,17 @@ const MyRecipes = () => {
                       onClick={() => handleRecipe(item)}
                     >
                       {item.images.length > 0 ? (
-                        <img
-                          src={`${baseUrl}${item.images[0].imageUrl}`}
-                          className="w-35 h-35 rounded-2xl"
-                          alt=""
-                        />
+                        item.images.map((img) => {
+                          if (img.order === 1) {
+                            return (
+                              <img
+                                src={`${baseUrl}${img.imageUrl}`}
+                                className="w-35 h-35 object-cover rounded-2xl"
+                                alt=""
+                              />
+                            );
+                          }
+                        })
                       ) : (
                         <div className="w-35 h-35 rounded-2xl bg-gray-400 flex items-center justify-center">
                           <img src={CamIcon} className="w-10 h-10" alt="" />
