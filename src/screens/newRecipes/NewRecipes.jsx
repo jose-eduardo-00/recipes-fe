@@ -279,7 +279,21 @@ const NewRecipes = () => {
   const handleAddImage = (event) => {
     const file = event.target.files[0];
     if (file && images.length < 3) {
-      setImages([...images, file]);
+      const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
+      if (allowedTypes.includes(file.type)) {
+        setImages([...images, file]);
+      } else {
+        setMsgType("warning");
+        setMsgTitle("Aviso");
+        setMsgText(
+          "A imagem precisa estar em um desses formatos: jpg, jpeg ou png."
+        );
+        setMsgAlert(true);
+
+        setTimeout(() => {
+          setMsgAlert(false);
+        }, 3000);
+      }
     }
   };
 
@@ -396,7 +410,7 @@ const NewRecipes = () => {
                     <input
                       ref={inputRef}
                       type="file"
-                      accept="image/*"
+                      accept="image/jpeg, image/jpg, image/png"
                       onChange={handleAddImage}
                       className="hidden"
                     />
