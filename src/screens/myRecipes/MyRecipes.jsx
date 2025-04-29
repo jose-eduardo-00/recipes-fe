@@ -116,6 +116,7 @@ const MyRecipes = () => {
                     <div
                       className="flex flex-col items-center gap-2 transition duration-300 hover:brightness-50 cursor-pointer"
                       onClick={() => handleRecipe(item)}
+                      key={item.id}
                     >
                       {item.images.length > 0 ? (
                         item.images.map((img) => {
