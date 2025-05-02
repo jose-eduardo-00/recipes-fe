@@ -9,12 +9,14 @@ import UsersList from "../screens/usersList/UsersList";
 import MyRecipes from "../screens/myRecipes/MyRecipes";
 import Perfil from "../screens/perfil/Perfil";
 import Recipe from "../screens/recipe/Recipe";
+import Recovery from "../screens/auth/recovery/Recovery";
 
 const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/register" element={<Register />} />
       <Route path="/" element={<Login />} />
+      <Route path="/recovery" element={<Recovery />} />
       <Route
         path="/home"
         element={

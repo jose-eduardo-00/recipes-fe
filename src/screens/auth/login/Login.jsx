@@ -109,8 +109,7 @@ const Login = () => {
   };
 
   const handleForgotPass = () => {
-    // qunado tiver a tela de recuperar senha
-    // navigate("/");
+    navigate("/recovery");
   };
 
   const handleCheckToken = () => {
