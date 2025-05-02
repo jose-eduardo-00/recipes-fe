@@ -9,6 +9,7 @@ const Modal = ({
   classCard,
   isLoading,
   handleSaveEdit,
+  isDelete,
 }) => {
   if (!isOpen) return null;
 
@@ -39,7 +40,7 @@ const Modal = ({
               classDiv={"justify-end mt-2"}
               onClick={handleSaveEdit}
               isLoading={isLoading}
-              text={"Salvar Alterações"}
+              text={isDelete ? "Deletar" : "Salvar Alterações"}
             />
           </div>
           {/* <button

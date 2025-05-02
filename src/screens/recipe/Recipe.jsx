@@ -12,6 +12,7 @@ import {
   faChevronRight,
   faMinus,
   faPlus,
+  faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import Modal from "../../components/modals/modalEditRecipe";
 import MainButton from "../../components/buttons/mainButton";
@@ -57,6 +58,9 @@ const Recipe = () => {
   const [msgText, setMsgText] = useState(false);
   const [msgTitle, setMsgTitle] = useState(false);
   const [msgType, setMsgType] = useState(false);
+
+  const [modalDelete, setModalDelete] = useState(false);
+  const [isLoadingDelete, setIsLoadingDelete] = useState(null);
 
   const { token } = useGlobalContext();
 
@@ -416,18 +420,45 @@ const Recipe = () => {
     }
   };
 
+  const handleMyRecipes = () => {
+    navigate("../my-recipes");
+  };
+
+  const handleOpenDelete = () => {
+    setModalDelete(true);
+  };
+
+  const handleDelete = () => {
+    setIsLoadingDelete(true);
+    api.deleteRecipe(recipe.id).then((res) => {
+      if (res.status === 200) {
+        setIsLoadingDelete(false);
+        handleMyRecipes();
+      } else {
+        setIsLoadingDelete(false);
+      }
+    });
+  };
+
   return (
     <div className="bg-gray-50 h-full py-10 flex flex-col items-center">
-      <h2 className="text-gray-800 text-2xl font-bold text-center mb-8 bg-gray-200 w-full py-2 relative">
+      <h2 className=" text-gray-800 text-2xl font-bold text-center mb-8 bg-gray-200 w-full py-2 relative">
+        <div></div>
         {recipe && recipe.name}
-        <MainButton
-          classButton={"text-sm text-white"}
-          classDiv={"absolute right-5 top-1/7 bg-black rounded-lg"}
-          disabled={false}
-          isLoading={false}
-          onClick={() => setIsModalOpen(true)}
-          text={"Editar Receita"}
-        />
+
+        <div className="absolute right-5 top-1/7 flex flex-row gap-8 mr-6">
+          <MainButton
+            classButton={"text-sm text-white"}
+            classDiv={"bg-black rounded-lg"}
+            disabled={false}
+            isLoading={false}
+            onClick={() => setIsModalOpen(true)}
+            text={"Editar Receita"}
+          />
+          <button className="cursor-pointer" onClick={handleOpenDelete}>
+            <FontAwesomeIcon icon={faTrash} className="text-red-500" />
+          </button>
+        </div>
       </h2>
       <div className="relative">
         {recipe && orderedImages.length > 0 ? (
@@ -889,6 +920,18 @@ const Recipe = () => {
             ))}
           </div>
         )}
+      </Modal>
+
+      <Modal
+        isOpen={modalDelete}
+        onClose={() => setModalDelete(false)}
+        title="Deletar Receita"
+        classCard={"!max-w-xl text-center"}
+        isLoading={isLoadingDelete}
+        handleSaveEdit={handleDelete}
+        isDelete={true}
+      >
+        <p className="font-medium py-8">Deseja mesmo deletar a receita?</p>
       </Modal>
     </div>
   );

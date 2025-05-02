@@ -59,7 +59,6 @@ export default {
   },
 
   recipe: async (id) => {
-    console.log("id aqui --->", id);
     try {
       const response = await http.get(`/recipes/recipe/${id}`, {
         headers: {
@@ -137,6 +136,23 @@ export default {
           Accept: "application/json",
           "Access-Control-Allow-Headers": "*",
           "Access-Control-Allow-Methods": "OPTIONS,PUT",
+        },
+      });
+
+      return response;
+    } catch (error) {
+      return error.response || error.message || error;
+    }
+  },
+
+  deleteRecipe: async (id) => {
+    try {
+      const response = await http.delete(`/recipes/delete/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "Access-Control-Allow-Headers": "*",
+          "Access-Control-Allow-Methods": "OPTIONS,DELETE",
         },
       });
 
